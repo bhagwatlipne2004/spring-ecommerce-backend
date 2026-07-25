@@ -1,0 +1,25 @@
+### IntelliJ ###
+.idea/
+*.iml
+
+### Maven ###
+target/
+
+### Logs ###
+*.log
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### Environment ###
+.env
+
+### Java ###
+*.class
+
+### VS Code ###
+.vscode/
+
+### Lombok ###
+lombok.config
