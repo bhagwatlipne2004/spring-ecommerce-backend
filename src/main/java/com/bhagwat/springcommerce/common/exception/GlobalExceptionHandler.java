@@ -1,5 +1,6 @@
 package com.bhagwat.springcommerce.common.exception;
 
+import io.swagger.v3.core.model.ApiDescription;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +27,21 @@ public class GlobalExceptionHandler {
 
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiErrorResponse);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleResourceNotFoundException(
+            ResourceNotFoundException exception,
+            HttpServletRequest request)
+    {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                exception.getMessage(),
+                request.getRequestURI()
+
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiErrorResponse);
     }
 }
