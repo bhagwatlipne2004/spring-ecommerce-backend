@@ -34,9 +34,11 @@ public class CategoryController {
     @GetMapping()
     public ResponseEntity<Page<CategoryResponse>> getAllCategories(
             @RequestParam (defaultValue = "0") int page,
-            @RequestParam (defaultValue = "10") int size
+            @RequestParam (defaultValue = "10") int size,
+            @RequestParam (defaultValue = "id") String sortBy,
+            @RequestParam (defaultValue = "asc") String direction
     ) {
-        Page<CategoryResponse> response = categoryService.getAllCategories(page, size);
+        Page<CategoryResponse> response = categoryService.getAllCategories(page, size, sortBy, direction);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -61,6 +63,13 @@ public class CategoryController {
         categoryService.deleteCategoryById(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<CategoryResponse>> searchByKeyword(@RequestParam String keyword) {
+        List<CategoryResponse> categoryResponse = categoryService.findByNameContainingIgnoreCase(keyword);
+
+        return ResponseEntity.status(HttpStatus.OK).body(categoryResponse);
     }
 
 }

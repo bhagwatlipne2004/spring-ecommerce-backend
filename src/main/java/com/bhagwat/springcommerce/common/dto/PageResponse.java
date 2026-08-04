@@ -1,0 +1,20 @@
+package com.bhagwat.springcommerce.common.dto;
+
+import java.util.List;
+
+public record PageResponse<T> (
+        List<T> data,
+
+        int page,
+
+        int size,
+
+        long totalElements,
+
+        int totalPages,
+
+        boolean first,
+
+        boolean last
+) {
+}

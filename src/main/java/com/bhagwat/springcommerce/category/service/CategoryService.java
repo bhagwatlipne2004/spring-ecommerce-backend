@@ -10,11 +10,14 @@ public interface CategoryService {
 
     CategoryResponse createCategory(CategoryRequest request);
 
-    Page<CategoryResponse> getAllCategories(int page, int size);
+    Page<CategoryResponse> getAllCategories(int page, int size, String sortBy, String direction);
 
     CategoryResponse getCategoryById(Long id);
 
     CategoryResponse updateCategoryById(Long id, CategoryRequest request);
 
     void deleteCategoryById(Long id);
+
+    List<CategoryResponse> findByNameContainingIgnoreCase(String keyword);
+
 }

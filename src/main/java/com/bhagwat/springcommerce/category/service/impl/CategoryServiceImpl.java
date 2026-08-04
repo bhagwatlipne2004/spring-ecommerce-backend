@@ -10,9 +10,9 @@ import com.bhagwat.springcommerce.common.exception.CategoryAlreadyExistsExceptio
 import com.bhagwat.springcommerce.common.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,12 +40,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Page<CategoryResponse> getAllCategories(int page, int size) {
+    public Page<CategoryResponse> getAllCategories(int page, int size, String sortBy, String direction) {
+        Sort sort = direction.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
 
-        PageRequest pageRequest = PageRequest.of(page, size);
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         Page<Category> categories = categoryRepository.findAll(pageRequest);
-
+        System.out.println("Sort By: " + sortBy);
+        System.out.println("Direction: " + direction);
         return categories.map(categoryMapper::toResponse);
     }
 
@@ -84,5 +88,13 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("Category","id",id));
         categoryRepository.delete(category);
+    }
+
+    @Override
+    public List<CategoryResponse> findByNameContainingIgnoreCase(String keyword) {
+        List<Category> categories = categoryRepository.findByNameContainingIgnoreCase(keyword);
+
+        return categories.stream().map(categoryMapper::toResponse).toList();
+
     }
 }
