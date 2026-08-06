@@ -1,6 +1,5 @@
 package com.bhagwat.springcommerce.common.exception;
 
-import io.swagger.v3.core.model.ApiDescription;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -48,8 +48,6 @@ public class CategoryServiceImpl implements CategoryService {
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 
         Page<Category> categories = categoryRepository.findAll(pageRequest);
-        System.out.println("Sort By: " + sortBy);
-        System.out.println("Direction: " + direction);
         return categories.map(categoryMapper::toResponse);
     }
 
