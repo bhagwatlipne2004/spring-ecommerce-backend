@@ -5,6 +5,8 @@ import com.bhagwat.springcommerce.product.dto.ProductResponse;
 import com.bhagwat.springcommerce.product.entity.Product;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface ProductService {
 
     ProductResponse createProduct(ProductRequest request);
@@ -13,7 +15,10 @@ public interface ProductService {
             int page,
             int size,
             String sortBy,
-            String direction
+            String direction,
+            Long categoryId,
+            String keyword,
+            Boolean active
     );
 
     public ProductResponse getProductById(Long id);
@@ -21,4 +26,7 @@ public interface ProductService {
     public ProductResponse updateProductById(ProductRequest request, Long id);
 
     public void deleteById(Long id);
+
+    public List<ProductResponse> searchByKeyword(String keyword);
+
 }

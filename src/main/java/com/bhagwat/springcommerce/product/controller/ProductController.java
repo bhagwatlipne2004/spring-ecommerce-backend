@@ -3,12 +3,12 @@ package com.bhagwat.springcommerce.product.controller;
 import com.bhagwat.springcommerce.product.dto.ProductRequest;
 import com.bhagwat.springcommerce.product.dto.ProductResponse;
 import com.bhagwat.springcommerce.product.service.ProductService;
-import com.bhagwat.springcommerce.product.service.impl.ProductServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -34,9 +34,13 @@ public class ProductController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size,
         @RequestParam(defaultValue = "id") String sortBy,
-        @RequestParam(defaultValue = "asc") String direction
-    ) {
-        Page<ProductResponse> responses = productService.getAllProducts(page, size, sortBy, direction);
+        @RequestParam(defaultValue = "asc") String direction,
+        @RequestParam(required = false) Long categoryId,
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) Boolean active
+    )
+    {
+        Page<ProductResponse> responses = productService.getAllProducts(page, size, sortBy, direction, categoryId, keyword, active);
 
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
@@ -64,4 +68,12 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductResponse>> searchByKeyword(@RequestParam String keyword) {
+        List<ProductResponse> responses = productService.searchByKeyword(keyword);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responses);
+    }
+
 }

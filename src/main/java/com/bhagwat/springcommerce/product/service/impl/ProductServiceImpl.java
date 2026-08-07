@@ -10,12 +10,16 @@ import com.bhagwat.springcommerce.product.entity.Product;
 import com.bhagwat.springcommerce.product.mapper.ProductMapper;
 import com.bhagwat.springcommerce.product.repository.ProductRepository;
 import com.bhagwat.springcommerce.product.service.ProductService;
+import com.bhagwat.springcommerce.product.specification.ProductSpecification;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,14 +62,38 @@ public class ProductServiceImpl implements ProductService {
             int page,
             int size,
             String sortBy,
-            String direction)
+            String direction,
+            Long categoryId,
+            String keyword,
+            Boolean active)
     {
         Sort sort = direction.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
-        PageRequest pageRequest = PageRequest.of(page, size, sort);
-        Page<Product> products = productRepository.findAll(pageRequest);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Specification<Product> specification = Specification.unrestricted();
+        if (categoryId != null) {
+
+            categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
+
+            specification = specification.and(
+                    ProductSpecification.hasCategory(categoryId));
+        }
+
+        if (keyword != null && !keyword.isBlank()) {
+            specification = specification.and(
+                    ProductSpecification.hasKeyword(keyword));
+        }
+        if (active != null) {
+            specification = specification.and(
+                    ProductSpecification.isActive(active)
+            );
+        }
+
+        Page<Product> products = productRepository.findAll(specification, pageable);
 
         return products.map(productMapper::toResponse);
     }
@@ -115,6 +143,15 @@ public class ProductServiceImpl implements ProductService {
                         .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
 
         productRepository.delete(product);
+    }
+
+    @Override
+    @Transactional
+    public List<ProductResponse> searchByKeyword(String keyword) {
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(keyword);
+
+        return products.stream()
+                .map(productMapper::toResponse).toList();
     }
 
 }
