@@ -1,5 +1,6 @@
 package com.bhagwat.springcommerce.product.service;
 
+import com.bhagwat.springcommerce.common.dto.PageResponse;
 import com.bhagwat.springcommerce.product.dto.ProductRequest;
 import com.bhagwat.springcommerce.product.dto.ProductResponse;
 import com.bhagwat.springcommerce.product.entity.Product;
@@ -11,7 +12,7 @@ public interface ProductService {
 
     ProductResponse createProduct(ProductRequest request);
 
-    public Page<ProductResponse> getAllProducts(
+    public PageResponse<ProductResponse> getAllProducts(
             int page,
             int size,
             String sortBy,
@@ -26,7 +27,4 @@ public interface ProductService {
     public ProductResponse updateProductById(ProductRequest request, Long id);
 
     public void deleteById(Long id);
-
-    public List<ProductResponse> searchByKeyword(String keyword);
-
 }

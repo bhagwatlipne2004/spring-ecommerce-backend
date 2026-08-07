@@ -16,6 +16,4 @@ public interface ProductRepository
 
     Optional<Product> findByName(String name);
 
-    List<Product> findByNameContainingIgnoreCase(String keyword);
-
 }

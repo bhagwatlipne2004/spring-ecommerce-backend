@@ -2,6 +2,7 @@ package com.bhagwat.springcommerce.product.service.impl;
 
 import com.bhagwat.springcommerce.category.entity.Category;
 import com.bhagwat.springcommerce.category.repository.CategoryRepository;
+import com.bhagwat.springcommerce.common.dto.PageResponse;
 import com.bhagwat.springcommerce.common.exception.ProductAlreadyExistsException;
 import com.bhagwat.springcommerce.common.exception.ResourceNotFoundException;
 import com.bhagwat.springcommerce.product.dto.ProductRequest;
@@ -11,15 +12,13 @@ import com.bhagwat.springcommerce.product.mapper.ProductMapper;
 import com.bhagwat.springcommerce.product.repository.ProductRepository;
 import com.bhagwat.springcommerce.product.service.ProductService;
 import com.bhagwat.springcommerce.product.specification.ProductSpecification;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponse createProduct(ProductRequest request) {
         if(productRepository.findByName(request.name()).isPresent()) {
             throw new ProductAlreadyExistsException(request.name());
@@ -57,8 +57,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
-    public Page<ProductResponse> getAllProducts(
+    @Transactional(readOnly = true)
+    public PageResponse<ProductResponse> getAllProducts(
             int page,
             int size,
             String sortBy,
@@ -95,11 +95,21 @@ public class ProductServiceImpl implements ProductService {
 
         Page<Product> products = productRepository.findAll(specification, pageable);
 
-        return products.map(productMapper::toResponse);
+        Page<ProductResponse> responsePage = products.map(productMapper::toResponse);
+
+        return new PageResponse<>(
+                responsePage.getContent(),
+                responsePage.getNumber(),
+                responsePage.getSize(),
+                responsePage.getTotalElements(),
+                responsePage.getTotalPages(),
+                responsePage.isFirst(),
+                responsePage.isLast()
+        );
     }
 
     @Override
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
@@ -108,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public ProductResponse updateProductById(ProductRequest request, Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
@@ -137,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public void deleteById(Long id) {
         Product product = productRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
@@ -145,13 +155,5 @@ public class ProductServiceImpl implements ProductService {
         productRepository.delete(product);
     }
 
-    @Override
-    @Transactional
-    public List<ProductResponse> searchByKeyword(String keyword) {
-        List<Product> products = productRepository.findByNameContainingIgnoreCase(keyword);
-
-        return products.stream()
-                .map(productMapper::toResponse).toList();
-    }
 
 }

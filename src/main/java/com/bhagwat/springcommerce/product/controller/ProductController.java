@@ -1,10 +1,10 @@
 package com.bhagwat.springcommerce.product.controller;
 
+import com.bhagwat.springcommerce.common.dto.PageResponse;
 import com.bhagwat.springcommerce.product.dto.ProductRequest;
 import com.bhagwat.springcommerce.product.dto.ProductResponse;
 import com.bhagwat.springcommerce.product.service.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +30,7 @@ public class ProductController {
     }
 
     @GetMapping()
-    public ResponseEntity<Page<ProductResponse>> getAllProducts(
+    public ResponseEntity<PageResponse<ProductResponse>> getAllProducts(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size,
         @RequestParam(defaultValue = "id") String sortBy,
@@ -40,7 +40,7 @@ public class ProductController {
         @RequestParam(required = false) Boolean active
     )
     {
-        Page<ProductResponse> responses = productService.getAllProducts(page, size, sortBy, direction, categoryId, keyword, active);
+        PageResponse<ProductResponse> responses = productService.getAllProducts(page, size, sortBy, direction, categoryId, keyword, active);
 
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
@@ -67,13 +67,6 @@ public class ProductController {
         productService.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<ProductResponse>> searchByKeyword(@RequestParam String keyword) {
-        List<ProductResponse> responses = productService.searchByKeyword(keyword);
-
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
 }

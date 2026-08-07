@@ -3,7 +3,8 @@ package com.bhagwat.springcommerce.common.dto;
 import java.util.List;
 
 public record PageResponse<T> (
-        List<T> data,
+
+        List<T> content,
 
         int page,
 
