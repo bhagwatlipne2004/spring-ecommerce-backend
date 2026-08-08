@@ -3,8 +3,6 @@ package com.bhagwat.springcommerce.product.specification;
 import com.bhagwat.springcommerce.product.entity.Product;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Locale;
-
 public class ProductSpecification {
 
     public static Specification<Product> hasCategory(Long categoryId) {

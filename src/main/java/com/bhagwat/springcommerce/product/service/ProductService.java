@@ -3,10 +3,6 @@ package com.bhagwat.springcommerce.product.service;
 import com.bhagwat.springcommerce.common.dto.PageResponse;
 import com.bhagwat.springcommerce.product.dto.ProductRequest;
 import com.bhagwat.springcommerce.product.dto.ProductResponse;
-import com.bhagwat.springcommerce.product.entity.Product;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface ProductService {
 

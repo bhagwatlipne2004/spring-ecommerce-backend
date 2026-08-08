@@ -43,4 +43,38 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiErrorResponse);
     }
+
+    @ExceptionHandler(ProductAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleProductAlreadyExistsException(
+            ProductAlreadyExistsException exception,
+            HttpServletRequest request)
+    {
+
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                exception.getMessage(),
+                request.getRequestURI()
+
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiErrorResponse);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleUserAlreadyExistsException(
+            UserAlreadyExistsException exception,
+            HttpServletRequest request)
+    {
+
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                exception.getMessage(),
+                request.getRequestURI()
+
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiErrorResponse);
+    }
 }
