@@ -15,5 +15,10 @@ spring:
       hibernate:
         format_sql: true
 
+
 server:
   port: 8080
+
+jwt:
+  secret: mySuperSecretKeyForSpringCommerceApplication123456789
+  expiration: 3600000
