@@ -57,6 +57,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE,
                                 "/api/v1/products/**")
                         .hasRole("ADMIN")
+                        .requestMatchers("/api/v1/cart/**")
+                        .authenticated()
 
                         .anyRequest()
                         .authenticated()
