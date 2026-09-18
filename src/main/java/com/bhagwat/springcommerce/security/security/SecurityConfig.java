@@ -52,6 +52,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.PUT,
                                 "/api/v1/products/**")
+
                         .hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.DELETE,
@@ -60,6 +61,21 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/cart/**")
                         .authenticated()
 
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/orders")
+                        .authenticated()
+
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/orders/**")
+                        .authenticated()
+
+                        .requestMatchers(HttpMethod.PATCH,
+                                "/api/v1/orders/*/cancel")
+                        .authenticated()
+
+                        .requestMatchers(HttpMethod.PATCH,
+                                "/api/v1/orders/*/status")
+                        .hasRole("ADMIN")
                         .anyRequest()
                         .authenticated()
                 )
