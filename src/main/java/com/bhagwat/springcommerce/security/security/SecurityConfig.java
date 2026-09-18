@@ -76,6 +76,23 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH,
                                 "/api/v1/orders/*/status")
                         .hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/products/*/reviews")
+                        .permitAll()
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/products/*/reviews")
+                        .authenticated()
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/v1/reviews/**")
+                        .authenticated()
+
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/v1/reviews/**")
+                        .authenticated()
+
                         .anyRequest()
                         .authenticated()
                 )

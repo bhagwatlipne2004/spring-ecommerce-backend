@@ -1,6 +1,7 @@
 package com.bhagwat.springcommerce.order.repository;
 
 import com.bhagwat.springcommerce.order.entity.Order;
+import com.bhagwat.springcommerce.product.entity.Product;
 import com.bhagwat.springcommerce.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByUserOrderByCreatedAtDesc(User user);
 
+    boolean existsByUserAndItemsProduct(
+            User user,
+            Product product
+    );
 }
