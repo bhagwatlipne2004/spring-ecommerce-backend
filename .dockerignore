@@ -1,0 +1,19 @@
+target
+.idea
+.git
+.gitignore
+README.md
+*.iml
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Database backups and dumps
+*.dump
+*.backup
+spring-commerce-schema.sql
+
+# Local tooling
+.vscode

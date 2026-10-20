@@ -82,9 +82,6 @@ public class OrderServiceImpl implements OrderService {
 
             product.setStockQuantity(
                     product.getStockQuantity() - cartItem.getQuantity());
-
-            product.setStockQuantity(
-                    product.getStockQuantity() - cartItem.getQuantity());
         }
 
         order.setTotalAmount(totalAmount);
@@ -159,15 +156,17 @@ public class OrderServiceImpl implements OrderService {
                                            OrderStatus status) {
 
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() ->
-                        new OrderNotFoundException(orderId));
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+
+        OrderStatus currentStatus = order.getStatus();
+
+        validateStatusTransition(currentStatus, status);
 
         order.setStatus(status);
 
-        validateStatusTransition(order.getStatus(), status);
+        Order savedOrder = orderRepository.save(order);
 
-        order.setStatus(status);
-        return orderMapper.toOrderResponse(order);
+        return orderMapper.toOrderResponse(savedOrder);
     }
 
     // Helper Methods

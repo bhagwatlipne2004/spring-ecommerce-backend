@@ -106,9 +106,6 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional(readOnly = true)
     public CartResponse getCart() {
-
-        User user = getCurrentUser();
-
         Cart cart = getCurrentUserCart();
 
         return cartMapper.toCartResponse(cart);

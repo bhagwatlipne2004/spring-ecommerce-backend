@@ -4,11 +4,13 @@ import com.bhagwat.springcommerce.category.entity.Category;
 import com.bhagwat.springcommerce.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@Builder
 @NoArgsConstructor
 @Entity
 @Data
@@ -30,7 +32,7 @@ public class Product extends BaseEntity {
     @Column(length = 500)
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 38, scale = 2)
     private BigDecimal price;
 
     @Column(nullable = false)
@@ -39,5 +41,5 @@ public class Product extends BaseEntity {
     private String imageUrl;
 
     @Column(nullable = false)
-    private Boolean active;
+    private Boolean active = true;
 }

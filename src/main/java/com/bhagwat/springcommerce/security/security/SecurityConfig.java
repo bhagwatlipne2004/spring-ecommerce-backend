@@ -108,6 +108,14 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class
                 )
 
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(
+                                        jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED
+                                )
+                        )
+                )
+
                 .formLogin(AbstractHttpConfigurer::disable)
 
                 .httpBasic(AbstractHttpConfigurer::disable);

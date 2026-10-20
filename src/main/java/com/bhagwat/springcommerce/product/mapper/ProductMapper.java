@@ -13,7 +13,9 @@ public class ProductMapper {
     public Product toEntity(ProductRequest request, Category category) {
         Product product = new Product();
         product.setName(request.name());
-        product.setActive(request.active());
+        product.setActive(
+                request.active() != null ? request.active() : true
+        );
         product.setDescription(request.description());
         product.setImageUrl(request.imageUrl());
         product.setStockQuantity(request.stockQuantity());

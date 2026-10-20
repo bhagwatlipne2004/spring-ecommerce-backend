@@ -134,7 +134,9 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", request.categoryId()));
 
         // Update the product
-        product.setActive(request.active());
+        if (request.active() != null) {
+            product.setActive(request.active());
+        }
         product.setPrice(request.price());
         product.setCategory(category);
         product.setStockQuantity(request.stockQuantity());

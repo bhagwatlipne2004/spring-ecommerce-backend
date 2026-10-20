@@ -14,12 +14,19 @@ Thumbs.db
 
 ### Environment ###
 .env
+.env.*
+!.env.example
 
 ### Java ###
 *.class
 
 ### VS Code ###
 .vscode/
+
+### Database backups ###
+*.dump
+*.backup
+spring-commerce-schema.sql
 
 ### Lombok ###
 lombok.config

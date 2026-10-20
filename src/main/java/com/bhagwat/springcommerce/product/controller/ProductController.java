@@ -40,7 +40,8 @@ public class ProductController {
         @RequestParam(required = false) Boolean active
     )
     {
-        PageResponse<ProductResponse> responses = productService.getAllProducts(page, size, sortBy, direction, categoryId, keyword, active);
+        PageResponse<ProductResponse> responses = productService.getAllProducts(page, size, sortBy, direction,
+                                                                                categoryId, keyword, active);
 
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
