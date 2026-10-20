@@ -219,71 +219,7 @@ SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/spring_ecommerce_db
 SPRING_DATASOURCE_USERNAME=local_db_username
 SPRING_DATASOURCE_PASSWORD=local_db_password
 JWT_SECRET=
-
-
-## Database Overview
-
-The application uses PostgreSQL for relational data persistence.
-
-The database schema includes the following tables:
-
-- `users` — user account information
-- `categories` — product categories
-- `products` — product information
-- `carts` — shopping carts
-- `cart_items` — products and quantities in carts
-- `orders` — order information
-- `order_items` — products associated with orders
-- `reviews` — product reviews
-
-## Testing
-
-### API Testing
-
-Use Swagger UI to test the application's REST endpoints:
-
-- Local: `http://localhost:8080/swagger-ui/index.html`
-- Production: `https://spring-ecommerce-backend-1.onrender.com/swagger-ui/index.html`
-
-Recommended manual test flow:
-
-1. Register a user.
-2. Log in and obtain a JWT.
-3. Retrieve products and categories.
-4. Authenticate and test cart operations.
-5. Test order and review endpoints.
-6. Verify validation errors and unauthorized requests.
-
-Administrative operations should be tested using an appropriately authorized admin account.
-
-### Automated Tests
-
-Run the test suite with Maven:
-
-```bash
-mvn test
 ```
-
-Automated test coverage should be documented once the tests and their results have been verified.
-
-## Future Improvements
-
-Potential areas for further development include:
-
-- Automated integration tests for key API workflows
-- Improved API error responses and validation documentation
-- Database migration management
-- CI/CD automation
-- Caching for frequently accessed data
-- Monitoring, logging, and production health checks
-
-## Author
-
-**Bhagwat Lipne**
-
-- GitHub: https://github.com/bhagwatlipne2004
-- LinkedIn: https://www.linkedin.com/in/bhagwat-lipne-035a4a321/
-
 
 ## Database Overview
 
